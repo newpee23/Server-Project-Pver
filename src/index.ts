@@ -3,8 +3,8 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
-import * as fs from 'fs';
-import * as path from 'path';
+import fs from 'fs';
+import path from 'path';
 import { getDbConnection } from './config/dbconnect';
 
 // Config
@@ -25,17 +25,7 @@ getDbConnection();
 // Route กำหนด path ของ routes อัตโนมัติ
 fs.readdirSync(routesPath).map((r: string) => app.use('/api', require(path.join(routesPath, r))));
 
-  // app.get("/", async (req: Request, res: Response) => {
-  //   try {
-  //     const connection = await getDbConnection();
-  //     const [rows] = await connection.query("SELECT * FROM member");
-  //     res.json(rows);
-  //   } catch (error: unknown) {
-  //     console.error("Error fetching data:", error);
-  //     return res.status(500).json({ error: "Error fetching data" });
-  //   }
-  // });
-
+fs.readdirSync(routesPath).map((r: string) => console.log(r));
 app.listen(PORT, () => {
     console.log(`Server is running on port localhost:${PORT}`);
 });
