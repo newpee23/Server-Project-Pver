@@ -1,32 +1,69 @@
 import { Request, Response } from "express"; // Import types for Request and Response
+import bcrypt from "bcryptjs";
+import { userRegister } from "../types/authType";
+import { findUserByRegisters } from "./userController";
 import { getDbConnection } from "../config/dbconnect";
-import { RowDataPacket } from "mysql2"; // RowDataPacket เป็น interface ที่ใช้ในการระบุโครงสร้างของข้อมูลที่ส่งกลับจากฐานข้อมูล
-export const getMember = async (req: Request, res: Response): Promise<void> => {
+
+export const register = async (
+  req: Request<userRegister>,
+  res: Response
+): Promise<void> => {
   try {
-    const member_id: string = req.params.member_id;
+    const { m_username, m_password, m_fname, m_lname , m_idcard , m_email , m_phone , m_address}: userRegister = req.body;
 
-    // Connect DB
-    const connection = await getDbConnection();
-    if (!member_id) {
-      //  WHERE m_id จาก params
-      const [rows] = await connection.query<RowDataPacket[]>("SELECT * FROM member");
-      res.json(rows);
+    if (!m_username || !m_password || !m_fname || !m_lname|| !m_idcard || !m_email|| !m_phone || !m_address) {
+      res.status(200).json({ message: "Invalid input data register" });
       return;
     }
+    // Check username & IdCard
+    try {
+      const userData = await findUserByRegisters({
+        m_username,
+        m_idcard,
+        m_email,
+      });
 
-    //  member all
-    const query = "SELECT * FROM member WHERE m_id = ? ORDER BY m_id ASC";
-    const [results] = await connection.query<RowDataPacket[]>(query, [member_id,]);
+      // ถ้าไม่มี userData ให้ บันทึกลง DB
+      if (userData.length === 0) {
+        try {
+          // Encrypt Password
+          const salt: string = await bcrypt.genSalt(10);
+          const connection = await getDbConnection();
+          // สร้างคำสั่ง SQL สำหรับแทรกข้อมูลในตาราง member
+          const insertQuery =
+            "INSERT INTO member (m_username, m_password, m_fname, m_lname, m_idcard, m_email, m_phone, m_address, m_level) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-    // connection.end(); ยกเลิกการเชื่อมต่อ Database
-    if (results.length === 0) {
-      res.status(200).send("Member not found");
+          // รันคำสั่ง SQL INSERT
+          await connection.query(insertQuery, [
+            m_username,
+            await bcrypt.hash(m_password, salt),
+            m_fname,
+            m_lname,
+            m_idcard,
+            m_email,
+            m_phone,
+            m_address,
+            "m",
+          ]);
+          res.status(201).json({ message: "User registered successfully" });
+        } catch (error: unknown) {
+          console.error(error);
+          res.status(500).json({ message: error });
+        }
+        return;
+      }
+
+      const firstUser = userData[0];
+      res.status(200).json({
+          message: `Username : ${firstUser.m_username} or IdCard : ${firstUser.m_idcard} or Email : ${firstUser.m_email} is already in use`,
+      });
       return;
+    } catch (error: unknown) {
+      console.error(error);
+      res.status(500).json({ message: error });
     }
-
-    res.json(results);
-  } catch (error) {
+  } catch (error: unknown) {
     console.error(error);
-    res.status(500).send("Server Error : " + error);
+    res.status(500).json({ message: error });
   }
 };
