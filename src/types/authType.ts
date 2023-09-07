@@ -23,3 +23,15 @@ export interface userInsertRegister extends RowDataPacket {
     m_address : string;
     m_level : string;
 }
+
+export type dataLogin = {
+    m_username: string;
+    m_password: string;
+}
+
+export type resLoginData = {
+    id: number;
+    fname: string;
+    lname: string;
+    level : string;
+}
