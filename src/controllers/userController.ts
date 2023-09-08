@@ -59,7 +59,8 @@ export const findMemberById = async (id: number = 0): Promise<userInsertRegister
 
   } catch (error: unknown) {
     console.error(error);
-    throw new Error("Error processing user data" + error);
+    // throw new Error("Error processing user data" + error);
+    return [];
   }
 };
 

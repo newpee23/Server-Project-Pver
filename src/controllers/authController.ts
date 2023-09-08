@@ -19,13 +19,20 @@ export const LoginUserApi = async (req: Request<dataLogin> , res: Response): Pro
       res.status(200).json({ message: "Invalid username or password" });
       return;
     }
-
     // Generate Token
+    if (!process.env.JWT_SECRET) {
+      res.status(500).json({ message: "Error Server : Please restart server" });
+      return
+    }
+    
     const payload: resLoginData = {id: userLogin[0].m_id , fname: userLogin[0].m_fname , lname: userLogin[0].m_lname  , level: userLogin[0].m_level};
-    jwt.sign(payload, 'jwtSecret' , {expiresIn: '8H'}, (err: Error | unknown, token: string | undefined) => {
-      if (err) throw err;
-      res.status(200).json({ token : token});
+
+    jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '8H' }, (err: Error | unknown, token: string | undefined) => {
+      if (err) return res.status(500).json({ message: "Error creating token : " + err });
+      
+      res.status(200).json({ token: token });
     });
+
 
     return;
   } catch (error) {
@@ -85,11 +92,11 @@ export const registerApi = async (
 
       const firstUser = userData[0];
       if (m_username === firstUser.m_username) {
-        res.status(200).json({ message: `Username : ${firstUser.m_username} is already in use` });
+        res.status(500).json({ message: `Username : ${firstUser.m_username} is already in use` });
       } else if (m_idcard === firstUser.m_idcard) {
-        res.status(200).json({ message: `IdCard : ${firstUser.m_idcard} is already in use` });
+        res.status(500).json({ message: `IdCard : ${firstUser.m_idcard} is already in use` });
       } else if (m_email === firstUser.m_email) {
-        res.status(200).json({ message: `Email : ${firstUser.m_email} is already in use` });
+        res.status(500).json({ message: `Email : ${firstUser.m_email} is already in use` });
       } 
       return;
     
