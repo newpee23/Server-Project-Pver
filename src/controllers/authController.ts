@@ -12,7 +12,7 @@ export const LoginUserApi = async (req: Request<dataLogin> , res: Response): Pro
       res.status(200).json({ message: "Please enter username and password." });
       return;
     }
-
+    console.log(m_username)
     // Check LoginUser
     const userLogin = await findUserByLogin({m_username , m_password});
     if(userLogin.length === 0){
@@ -21,7 +21,7 @@ export const LoginUserApi = async (req: Request<dataLogin> , res: Response): Pro
     }
     // Generate Token
     if (!process.env.JWT_SECRET) {
-      res.status(500).json({ message: "Error Server : Please restart server" });
+      res.status(200).json({ message: "Error Server : Please restart server" });
       return
     }
     
@@ -30,7 +30,7 @@ export const LoginUserApi = async (req: Request<dataLogin> , res: Response): Pro
     jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '8H' }, (err: Error | unknown, token: string | undefined) => {
       if (err) return res.status(500).json({ message: "Error creating token : " + err });
       
-      res.status(200).json({ token: token });
+      res.status(200).json({ token: token , userLogin: payload});
     });
 
 
@@ -147,7 +147,12 @@ export async function findUserByLogin({m_username, m_password}: dataLogin): Prom
       m_username,
     ]);
 
+    if(results.length === 0){
+      return [];
+    }
+
     const dataUser = results[0];
+ 
     if(dataUser.m_username){
         // Check Password
         const IsMatchPassword = await bcrypt.compare(m_password,dataUser.m_password);
@@ -159,6 +164,7 @@ export async function findUserByLogin({m_username, m_password}: dataLogin): Prom
   } catch (error: unknown) {
     // การจัดการข้อผิดพลาดเมื่อเกิดข้อผิดพลาดในการดำเนินการ
     console.error(error);
-    throw new Error("Error processing user data" + error);
+    // throw new Error("Error processing user data" + error);
+    return [];
   }
 }
