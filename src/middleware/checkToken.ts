@@ -5,7 +5,7 @@ import { findMemberById } from '../controllers/userController';
 export const checkRequestToken = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
         const token: string | undefined = Array.isArray(req.headers["token-request"]) ? req.headers["token-request"][0] : req.headers["token-request"];
-        console.log(token)
+       
         if (token === undefined) {
             res.status(401).send('No Token, Authorization Denied');
             return;
