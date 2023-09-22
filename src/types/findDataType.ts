@@ -1,8 +1,8 @@
 import { RowDataPacket } from "mysql2";
 
 export interface QuestionnaireDataStatus extends RowDataPacket {
-  rec_id: number;
-  form_id: string;
+  id: number;
+  f_id: string;
   member_id: number;
   p0_user: number | null;
   p0_time: Date | null;

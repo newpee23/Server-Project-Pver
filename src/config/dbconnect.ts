@@ -12,7 +12,7 @@ export const getDbConnection = async (): Promise<Connection> => {
       host: "localhost",
       user: "root",
       password: "",
-      database: "pver2",
+      database: "pver",
     });
     console.log("Connected to MySQL database!");
     dbConnection = connection;
