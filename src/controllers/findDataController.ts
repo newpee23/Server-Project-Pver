@@ -52,7 +52,26 @@ export const findQuestionnaireData = async (
 ): Promise<QuestionnaireDataStatus[] | null> => {
   try {
     const connection = await getDbConnection();
-    const query = "SELECT * FROM `master_complete` WHERE f_id = ? ORDER BY id ASC";
+    const query = `SELECT master_complete.*
+                  , IFNULL((SELECT CONCAT(m_fname,' ',m_lname) FROM member WHERE master_complete.p0_user = member.m_id),null) AS p0_user_name 
+                  , IFNULL((SELECT CONCAT(m_fname,' ',m_lname) FROM member WHERE master_complete.p1_user = member.m_id),null) AS p1_user_name
+                  , IFNULL((SELECT CONCAT(m_fname,' ',m_lname) FROM member WHERE master_complete.p3_user = member.m_id),null) AS p3_user_name
+                  , IFNULL((SELECT CONCAT(m_fname,' ',m_lname) FROM member WHERE master_complete.p4_user = member.m_id),null) AS p4_user_name 
+                  , IFNULL((SELECT CONCAT(m_fname,' ',m_lname) FROM member WHERE master_complete.p5_user = member.m_id),null) AS p5_user_name 
+                  , IFNULL((SELECT CONCAT(m_fname,' ',m_lname) FROM member WHERE master_complete.p6_user = member.m_id),null) AS p6_user_name 
+                  , IFNULL((SELECT CONCAT(m_fname,' ',m_lname) FROM member WHERE master_complete.p7_user = member.m_id),null) AS p7_user_name 
+                  , IFNULL((SELECT CONCAT(m_fname,' ',m_lname) FROM member WHERE master_complete.p8_user = member.m_id),null) AS p8_user_name 
+                  , IFNULL((SELECT CONCAT(m_fname,' ',m_lname) FROM member WHERE master_complete.p9_user = member.m_id),null) AS p9_user_name 
+                  , IFNULL((SELECT CONCAT(m_fname,' ',m_lname) FROM member WHERE master_complete.p10_user = member.m_id),null) AS p10_user_name
+                  , IFNULL((SELECT CONCAT(m_fname,' ',m_lname) FROM member WHERE master_complete.p11_user = member.m_id),null) AS p12_user_name
+                  , IFNULL((SELECT CONCAT(m_fname,' ',m_lname) FROM member WHERE master_complete.p13_user = member.m_id),null) AS p13_user_name
+                  , IFNULL((SELECT CONCAT(m_fname,' ',m_lname) FROM member WHERE master_complete.p14_user = member.m_id),null) AS p14_user_name
+                  , IFNULL((SELECT CONCAT(m_fname,' ',m_lname) FROM member WHERE master_complete.p15_user = member.m_id),null) AS p15_user_name    
+                  , IFNULL((SELECT CONCAT(m_fname,' ',m_lname) FROM member WHERE master_complete.p16_user = member.m_id),null) AS p16_user_name
+                  , IFNULL((SELECT CONCAT(m_fname,' ',m_lname) FROM member WHERE master_complete.p17_user = member.m_id),null) AS p17_user_name
+                  , IFNULL((SELECT CONCAT(m_fname,' ',m_lname) FROM member WHERE master_complete.p18_user = member.m_id),null) AS p18_user_name      
+                  FROM master_complete WHERE f_id = ? ORDER BY id ASC`;
+
     const [results] = await connection.query<QuestionnaireDataStatus[]>(query, [f_id]);
     // console.log(results);
     return results;
