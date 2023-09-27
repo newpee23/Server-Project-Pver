@@ -59,3 +59,13 @@ export interface QuestionnaireDataStatus extends RowDataPacket {
   p17_user_name: string | null;
   p18_user_name: string | null;
 }
+
+export interface BanData extends RowDataPacket {
+  id: string;
+  ban: string;
+  mo: string;
+  tombonName: string;
+  ampherName: string;
+  provinceName: string;
+  banProvince: string;
+}
