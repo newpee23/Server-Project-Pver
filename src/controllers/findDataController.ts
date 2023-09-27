@@ -89,7 +89,6 @@ export const getBanApi = async (req: Request,res: Response): Promise<void> => {
     res.status(200).json({ message: `การประมวลผลผิดพลาดกรุณาลองอีกครั้ง` });
     return;
    }
-
    res.status(200).json(data);
    return;
   } catch (error) {

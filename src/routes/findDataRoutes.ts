@@ -7,6 +7,6 @@ const router = express.Router(); //ใช้สร้างเส้นทาง
 router.get("/findQuestionnaire/:f_id/:member_id", checkRequestToken, getQuestionnaireApi);
 
 // http://localhost:5050/api/findBan
-router.get("/findBan/", getBanApi);
+router.get("/findBan/", checkRequestToken, getBanApi);
 
 export = router;
