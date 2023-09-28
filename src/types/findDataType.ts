@@ -68,4 +68,7 @@ export interface BanData extends RowDataPacket {
   ampherName: string;
   provinceName: string;
   banProvince: string;
+  tambon_code: string;
+  ampher_code: string;
+  province_code: string;
 }

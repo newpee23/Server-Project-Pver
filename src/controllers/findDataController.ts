@@ -100,7 +100,7 @@ export const getBanApi = async (req: Request,res: Response): Promise<void> => {
 export const findBanData = async (): Promise<BanData[] | null> => {
   try {
     const connection = await getDbConnection();
-    const query = `SELECT ban.code AS id , ban.ban, ban.mo
+    const query = `SELECT ban.code AS id , ban.ban, ban.mo , ban.tambon_code , ban.ampher_code , ban.province_code
     ,(SELECT tambon.tambon FROM tambon WHERE ban.tambon_code = tambon.code) AS tombonName
     ,(SELECT ampher.ampher FROM ampher WHERE ban.ampher_code = ampher.code) AS ampherName
     ,(SELECT province.province FROM province WHERE ban.province_code = province.code) AS provinceName
