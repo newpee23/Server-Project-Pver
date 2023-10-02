@@ -46,9 +46,9 @@ export const registerApi = async (
   res: Response
 ): Promise<void> => {
   try {
-    const { m_username, m_password, m_fname, m_lname , m_idcard , m_email , m_phone , m_address}: userRegister = req.body;
+    const { m_username, m_password, m_fname, m_lname , m_idcard , m_email , m_phone , m_address , m_level} : userRegister = req.body;
 
-    if (!m_username || !m_password || !m_fname || !m_lname|| !m_idcard || !m_email|| !m_phone || !m_address) {
+    if (!m_username || !m_password || !m_fname || !m_lname|| !m_idcard || !m_email|| !m_phone || !m_level) {
       res.status(200).json({ message: "Invalid input data register" });
       return;
     }
@@ -80,7 +80,7 @@ export const registerApi = async (
             m_email,
             m_phone,
             m_address,
-            "m",
+            m_level,
           ]);
           res.status(201).json({ message: "User registered successfully" });
         } catch (error: unknown) {

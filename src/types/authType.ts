@@ -9,6 +9,7 @@ export type userRegister = {
     m_email : string;
     m_phone : string;
     m_address : string;
+    m_level : string;
 }
 
 export interface userInsertRegister extends RowDataPacket {
