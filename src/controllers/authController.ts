@@ -92,11 +92,11 @@ export const registerApi = async (
 
       const firstUser = userData[0];
       if (m_username === firstUser.m_username) {
-        res.status(500).json({ message: `Username : ${firstUser.m_username} is already in use` });
+        res.status(201).json({ message: `Username : ${firstUser.m_username} is already in use` });
       } else if (m_idcard === firstUser.m_idcard) {
-        res.status(500).json({ message: `IdCard : ${firstUser.m_idcard} is already in use` });
+        res.status(201).json({ message: `IdCard : ${firstUser.m_idcard} is already in use` });
       } else if (m_email === firstUser.m_email) {
-        res.status(500).json({ message: `Email : ${firstUser.m_email} is already in use` });
+        res.status(201).json({ message: `Email : ${firstUser.m_email} is already in use` });
       } 
       return;
     
