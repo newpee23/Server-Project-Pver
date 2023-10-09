@@ -47,9 +47,7 @@ export const getQuestionnaireApi = async (
   }
 };
 
-export const findQuestionnaireData = async (
-  f_id: string
-): Promise<QuestionnaireDataStatus[] | null> => {
+export const findQuestionnaireData = async (f_id: string): Promise<QuestionnaireDataStatus[] | null> => {
   try {
     const connection = await getDbConnection();
     const query = `SELECT master_complete.*
