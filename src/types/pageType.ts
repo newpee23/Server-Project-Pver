@@ -37,7 +37,7 @@ export interface newDataP0DB {
     [key: string]: string|number|undefined;
     fId?: string | undefined;
     p0F1: string;
-    p0F2: string;
+    p0F2: number;
     p0F3: number;
     p0F4: string;
     p0F5: string;

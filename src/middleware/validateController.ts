@@ -102,8 +102,10 @@ export const validateValueFrom0 = (data: FormDataP0): FromP0Err | boolean => {
 
   // f13 หมายเลขโทรศัพท์ที่ติดต่อได้
   const f13Val: string = data.p0F13;
-  if (f13Val !== "-" && f13Val !== "")
-    setNewFormErr({name: "p0F13",txt: "ระบุ หมายเลขโทรศัพท์ 10 ตัว เป็นเลขเท่านั้น",});
+  if (f13Val !== "-" && f13Val !== ""){
+    if(!/^[0-9]{10}$/.test(f13Val)) setNewFormErr({name: "p0F13",txt: "ระบุ หมายเลขโทรศัพท์ 10 ตัว เป็นเลขเท่านั้น",});
+  }
+   
 
   //f14 จำนวนครอบครัวในครัวเรือน
   const f14Val: number = parseInt(data.p0F14) ? parseInt(data.p0F14) : 0;

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 22, 2023 at 11:08 AM
+-- Generation Time: Oct 10, 2023 at 12:31 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 7.4.29
 
@@ -129,6 +129,25 @@ INSERT INTO `ban` (`code`, `ban`, `mo`, `tambon_code`, `ampher_code`, `province_
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `gender`
+--
+
+CREATE TABLE `gender` (
+  `gender_id` int(11) NOT NULL,
+  `gender_name` varchar(5) COLLATE utf8mb4_thai_520_w2 NOT NULL COMMENT 'ชื่อเพศ'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_thai_520_w2;
+
+--
+-- Dumping data for table `gender`
+--
+
+INSERT INTO `gender` (`gender_id`, `gender_name`) VALUES
+(1, 'ชาย'),
+(2, 'หญิง');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `master_complete`
 --
 
@@ -169,15 +188,10 @@ CREATE TABLE `master_complete` (
   `p16_user` int(11) DEFAULT NULL COMMENT 'ผู้บันทึก',
   `p16_time` datetime DEFAULT NULL COMMENT 'เวลาบันทึก',
   `p17_user` int(11) DEFAULT NULL COMMENT 'ผู้บันทึก',
+  `p17_time` datetime DEFAULT NULL COMMENT 'เวลาบันทึก',
+  `p18_user` int(11) DEFAULT NULL COMMENT 'ผู้บันทึก',
   `p18_time` datetime DEFAULT NULL COMMENT 'เวลาบันทึก'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_thai_520_w2;
-
---
--- Dumping data for table `master_complete`
---
-
-INSERT INTO `master_complete` (`id`, `f_id`, `member_id`, `p0_user`, `p0_time`, `p1_user`, `p1_time`, `p3_user`, `p3_time`, `p4_user`, `p4_time`, `p5_user`, `p5_time`, `p6_user`, `p6_time`, `p7_user`, `p7_time`, `p8_user`, `p8_time`, `p9_user`, `p9_time`, `p10_user`, `p10_time`, `p11_user`, `p11_time`, `p12_user`, `p12_time`, `p13_user`, `p13_time`, `p14_user`, `p14_time`, `p15_user`, `p15_time`, `p16_user`, `p16_time`, `p17_user`, `p18_time`) VALUES
-(1, '05200', 1, 1, '2023-09-21 15:06:13', 1, '2023-09-22 15:03:32', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -204,6 +218,44 @@ CREATE TABLE `member` (
 
 INSERT INTO `member` (`m_id`, `m_fname`, `m_lname`, `m_idcard`, `m_email`, `m_username`, `m_password`, `m_phone`, `m_address`, `m_level`) VALUES
 (1, 'Peerapt', 'Mueangmo', '1549988550368', 'new@gmail.com', 'new', '$2a$10$3J7FCI0ptsFQDqV/hinNLuAPtRODqzjSc6QfyY0adJC0xoD60XJDC', '0808430385', '-', 'm');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `page0`
+--
+
+CREATE TABLE `page0` (
+  `id` int(11) NOT NULL,
+  `f_id` varchar(20) COLLATE utf8_thai_520_w2 NOT NULL COMMENT 'หมายเลขแบบสอบถาม',
+  `f1` varchar(10) COLLATE utf8_thai_520_w2 NOT NULL COMMENT 'รหัสบ้าน',
+  `f2` int(11) NOT NULL COMMENT 'หลังคาเรือนที่',
+  `f3` int(11) NOT NULL COMMENT 'ชื่อหมู่บ้าน',
+  `f4` varchar(20) COLLATE utf8_thai_520_w2 NOT NULL COMMENT 'บ้านเลขที่',
+  `f5` varchar(10) COLLATE utf8_thai_520_w2 NOT NULL COMMENT 'หมู่ที่',
+  `f6` varchar(20) COLLATE utf8_thai_520_w2 NOT NULL COMMENT 'ตำบล',
+  `f7` varchar(20) COLLATE utf8_thai_520_w2 NOT NULL COMMENT 'อำเภอ',
+  `f8` varchar(20) COLLATE utf8_thai_520_w2 NOT NULL COMMENT 'จังหวัด',
+  `f9t` int(11) NOT NULL COMMENT 'คำนำหน้าชื่อ เจ้าของบ้าน',
+  `f9` varchar(100) COLLATE utf8_thai_520_w2 NOT NULL COMMENT 'ชื่อเจ้าของบ้าน',
+  `f10` varchar(100) COLLATE utf8_thai_520_w2 NOT NULL COMMENT 'นามสกุลเจ้าของบ้าน',
+  `f11t` int(11) NOT NULL COMMENT 'คำนำหน้าชื่อ ผู้ให้ข้อมูล',
+  `f11` varchar(100) COLLATE utf8_thai_520_w2 NOT NULL COMMENT 'ชื่อผู้ให้ข้อมูล',
+  `f12` varchar(100) COLLATE utf8_thai_520_w2 NOT NULL COMMENT 'นามสกุลผู้ให้ข้อมูล',
+  `f13` varchar(10) COLLATE utf8_thai_520_w2 NOT NULL COMMENT 'หมายเลขโทรศัพท์ที่ติดต่อได้',
+  `f14` int(11) NOT NULL COMMENT 'จำนวนครอบครัวในครัวเรือน',
+  `f15` int(11) NOT NULL COMMENT 'จำนวนสมาชิกทั้งหมดในครัวเรือน',
+  `f16` int(11) NOT NULL COMMENT 'ชาย',
+  `f17` int(11) NOT NULL COMMENT 'หญิง',
+  `f18t` int(11) NOT NULL COMMENT 'คำนำหน้าชื่อ ชื่อผู้สำรวจ 1. ',
+  `f18` varchar(100) COLLATE utf8_thai_520_w2 NOT NULL COMMENT 'ชื่อผู้สำรวจ 1. ',
+  `f19` varchar(100) COLLATE utf8_thai_520_w2 NOT NULL COMMENT 'นามสกุลผู้สำรวจ 1. ',
+  `f20t` int(11) NOT NULL COMMENT 'คำนำหน้าชื่อ ชื่อผู้สำรวจ 2. ',
+  `f20` varchar(100) COLLATE utf8_thai_520_w2 NOT NULL COMMENT 'ชื่อผู้สำรวจ 2. ',
+  `f21` varchar(100) COLLATE utf8_thai_520_w2 NOT NULL COMMENT 'นามสกุลผู้สำรวจ 2. ',
+  `f22` datetime NOT NULL COMMENT 'เริ่มสำรวจเวลา',
+  `f23` datetime NOT NULL COMMENT 'เสร็จเวลา'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_thai_520_w2;
 
 -- --------------------------------------------------------
 
@@ -276,6 +328,29 @@ INSERT INTO `tambon` (`code`, `tambon`) VALUES
 ('581701', 'ปางมะผ้า'),
 ('581702', 'ถ้ำลอด');
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `title`
+--
+
+CREATE TABLE `title` (
+  `title_join` int(1) NOT NULL COMMENT 'รหัสคำนำหน้าชื่อ',
+  `title_name` varchar(10) COLLATE utf8mb4_thai_520_w2 NOT NULL COMMENT 'ชื่อคำนำหน้า',
+  `gender_id` int(1) NOT NULL COMMENT 'รหัสเพศ'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_thai_520_w2;
+
+--
+-- Dumping data for table `title`
+--
+
+INSERT INTO `title` (`title_join`, `title_name`, `gender_id`) VALUES
+(1, 'นาง', 2),
+(2, 'นางสาว', 2),
+(3, 'เด็กหญิง', 2),
+(4, 'นาย', 1),
+(5, 'เด็กชาย', 1);
+
 --
 -- Indexes for dumped tables
 --
@@ -296,11 +371,18 @@ ALTER TABLE `ban`
   ADD KEY `ampher_code` (`ampher_code`);
 
 --
+-- Indexes for table `gender`
+--
+ALTER TABLE `gender`
+  ADD PRIMARY KEY (`gender_id`);
+
+--
 -- Indexes for table `master_complete`
 --
 ALTER TABLE `master_complete`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `f_id` (`f_id`);
+  ADD UNIQUE KEY `f_id` (`f_id`),
+  ADD KEY `member_id` (`member_id`);
 
 --
 -- Indexes for table `member`
@@ -312,6 +394,14 @@ ALTER TABLE `member`
   ADD UNIQUE KEY `m_email` (`m_email`),
   ADD UNIQUE KEY `m_username` (`m_username`),
   ADD UNIQUE KEY `m_password` (`m_password`);
+
+--
+-- Indexes for table `page0`
+--
+ALTER TABLE `page0`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `f_id` (`f_id`),
+  ADD KEY `f6` (`f6`,`f7`,`f8`,`f9t`,`f11t`,`f18t`,`f20t`);
 
 --
 -- Indexes for table `province`
@@ -330,16 +420,28 @@ ALTER TABLE `tambon`
 --
 
 --
+-- AUTO_INCREMENT for table `gender`
+--
+ALTER TABLE `gender`
+  MODIFY `gender_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT for table `master_complete`
 --
 ALTER TABLE `master_complete`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `member`
 --
 ALTER TABLE `member`
-  MODIFY `m_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'รหัส', AUTO_INCREMENT=2;
+  MODIFY `m_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'รหัส', AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `page0`
+--
+ALTER TABLE `page0`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables
@@ -351,6 +453,18 @@ ALTER TABLE `member`
 ALTER TABLE `ban`
   ADD CONSTRAINT `ban_ibfk_1` FOREIGN KEY (`province_code`) REFERENCES `province` (`code`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `ban_ibfk_2` FOREIGN KEY (`ampher_code`) REFERENCES `ampher` (`code`);
+
+--
+-- Constraints for table `master_complete`
+--
+ALTER TABLE `master_complete`
+  ADD CONSTRAINT `master_complete_ibfk_1` FOREIGN KEY (`member_id`) REFERENCES `member` (`m_id`);
+
+--
+-- Constraints for table `page0`
+--
+ALTER TABLE `page0`
+  ADD CONSTRAINT `page0_ibfk_1` FOREIGN KEY (`f6`) REFERENCES `tambon` (`code`);
 
 --
 -- Constraints for table `tambon`
