@@ -71,7 +71,7 @@ export const insertPage0 = async (data: FormDataP0, member_id: number, fId: stri
 
     const values: (string | number | Date | null)[] = [
         null, // id
-        member_id, // f_id
+        fId, // f_id
         data.p0F1, // f1
         data.p0F2, // f2
         data.p0F3, // f3

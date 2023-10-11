@@ -1,11 +1,13 @@
 import { Request, Response } from "express";
-import { FormDataP0, FromP0Err } from "../types/pageType";
+import { FormDataP0, FromP0Err, page0Query } from "../types/pageType";
 import { validateDataForm0, validateValueFrom0 } from "../middleware/validateController";
 import { findQuestionnaireData } from "./findDataController";
 import { QuestionnaireDataStatus } from "../types/findDataType";
 import { insertMasterComplete, insertPage0 } from "../models/insertModel";
+import { queryPage0 } from "../models/getModel";
+import { responsePage0 } from "../middleware/initialDataFrom";
 
-// Page 0
+// Page 0 save
 export const page0Api = async (req: Request, res: Response): Promise<void> => {
   try {
     const dataForm0: FormDataP0 = req.body.data;
@@ -30,21 +32,46 @@ export const page0Api = async (req: Request, res: Response): Promise<void> => {
       // Insert master_complete 
       const addMasterComplete: boolean = await insertMasterComplete(member_id, fId, 'page0');
       if(!addMasterComplete){
-        res.status(200).json({ message: "เกิดข้อผิดพลาดการประมวลผล กรุณาลองอีกครั้ง" , status: false});
+        res.status(200).json({ message: "เกิดข้อผิดพลาดการบันทึกหน้าปก" , status: false});
         return;
       }
       // Insert page0
       const addPage0:boolean = await insertPage0(dataForm0,member_id, fId);
+      if(!addPage0){
+        res.status(200).json({ message: "เกิดข้อผิดพลาดการบันทึกหน้าปก" , status: false});
+        return;
+      }
       res.status(200).json({ message: "บันทึกข้อมูลหน้าปกสำเร็จ" , status: true});
       return;
     } else {
       res.status(200).json({ message: validateStr , status: false});
     }
 
-  } catch (error) {
+  } catch (error: unknown) {
     console.error(error);
     res.status(500).json({ message: error , status: false});
   }
 };
+
+// Page 0 find
+export const findPage0Api  = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const fId: string = req.params.f_id;
+    // ดึงข้อมูล page0
+    const page0Data: page0Query[] | null = await queryPage0(fId);
+    if(page0Data === null) {
+      res.status(200).json({ message: `พบข้อผิดพลาดการประมวลผลหน้าปก` , status: false});
+      return;
+    }
+    // แปลงข้อมูลให้ client
+    const response = responsePage0(page0Data);
+    res.status(200).json({ message: response , status: true});
+    return;
+  } catch (error: unknown) {
+    console.error(error);
+    res.status(500).json({ message: error , status: false});
+  }
+};
+
 
 
