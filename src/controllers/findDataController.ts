@@ -9,7 +9,7 @@ export const getQuestionnaireApi = async (
 ): Promise<void> => {
   try {
     const f_id: string = req.params.f_id;
-    const member_id: string = req.params.member_id;
+    const member_id: number = parseInt(req.params.member_id);
 
     // Check จำนวน f_id
     const numberOfCharacters: number = f_id.length;
@@ -19,7 +19,7 @@ export const getQuestionnaireApi = async (
     }
 
     // Check questionnaire Data
-    const masterComplete = await findQuestionnaireData(f_id);
+    const masterComplete = await findQuestionnaireData(f_id, member_id);
    
     if(masterComplete === null){
       res.status(200).json({ message: `เกิดข้อผิดพลาดในการประมวลผลคำขอ` });
@@ -33,7 +33,7 @@ export const getQuestionnaireApi = async (
     // Check ว่าคนเรียกข้อมูลเป็นคนบันทึกแบบสอบถามหรือไม่
     // const p0_u: string = masterComplete[0].p0_u.replace(/\D/g, "");
     const queryFid: number = masterComplete[0].member_id;
-    if (parseInt(member_id) !== queryFid) {
+    if (member_id !== queryFid) {
       res.status(200).json({ message: `คุณไม่สามารถเข้าถึงแบบสอบถาม ${f_id} นี้ได้` });
       return;
     }
@@ -47,7 +47,7 @@ export const getQuestionnaireApi = async (
   }
 };
 
-export const findQuestionnaireData = async (f_id: string): Promise<QuestionnaireDataStatus[] | null> => {
+export const findQuestionnaireData = async (f_id: string, member_id: number): Promise<QuestionnaireDataStatus[] | null> => {
   try {
     const connection = await getDbConnection();
     const query = `SELECT master_complete.*
@@ -68,9 +68,9 @@ export const findQuestionnaireData = async (f_id: string): Promise<Questionnaire
     , IFNULL((SELECT CONCAT(m_fname,' ',m_lname) FROM member WHERE master_complete.p16_user = member.m_id),null) AS p16_user_name
     , IFNULL((SELECT CONCAT(m_fname,' ',m_lname) FROM member WHERE master_complete.p17_user = member.m_id),null) AS p17_user_name
     , IFNULL((SELECT CONCAT(m_fname,' ',m_lname) FROM member WHERE master_complete.p18_user = member.m_id),null) AS p18_user_name      
-    FROM master_complete WHERE f_id = ? ORDER BY id ASC`;
+    FROM master_complete WHERE f_id = ? AND member_id = ? ORDER BY id ASC`;
 
-    const [results] = await connection.query<QuestionnaireDataStatus[]>(query, [f_id]);
+    const [results] = await connection.query<QuestionnaireDataStatus[]>(query, [f_id, member_id]);
     // console.log(results);
     return results;
   } catch (error: unknown) {
