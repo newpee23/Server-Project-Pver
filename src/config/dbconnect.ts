@@ -9,9 +9,9 @@ export const getDbConnection = async (): Promise<Connection> => {
 
   try {
     const connection = await mysql.createConnection({
-      host: "localhost",
+      host: "pver.cxworxybio16.ap-southeast-1.rds.amazonaws.com",
       user: "root",
-      password: "",
+      password: "Nn!Peerapat",
       database: "pver",
     });
     console.log("Connected to MySQL database!");
