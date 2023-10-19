@@ -3,7 +3,7 @@ import { page0Query } from "../types/pageType";
 
 export const queryPage0 = async (fId: string): Promise<page0Query[] | null> => {
     try {
-      const connection = await getDbConnection();
+      const connection = getDbConnection();
       const query = `SELECT * ,
       (SELECT tambon.tambon FROM tambon WHERE tambon.code = page0.f6) AS f6Name,
       (SELECT ampher.ampher FROM ampher WHERE ampher.code = page0.f7) AS f7Name,
@@ -13,6 +13,7 @@ export const queryPage0 = async (fId: string): Promise<page0Query[] | null> => {
       ORDER BY id ASC`;
   
       const [results] = await connection.query<page0Query[]>(query,[fId]);
+      
       // console.log(results);
       return results;
     } catch (error: unknown) {

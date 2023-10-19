@@ -19,13 +19,13 @@ app.use(morgan('dev')); //ดู log เรียก Api
 app.use(bodyParser.json({limit:'20mb'})); // จำกัดขนาดข้อมูลที่ยิงมาจากหน้าบ้าน
 app.use(cors()); //จัดการการดึง Api ไปใช้
 
-// Connect DB
-getDbConnection();
+// ทดสอบ Connect DB
+const connection = getDbConnection();
+connection.end(); //ยกเลิกการเชื่อมต่อ Database
 
 // Route กำหนด path ของ routes อัตโนมัติ
 fs.readdirSync(routesPath).map((r: string) => app.use('/api', require(path.join(routesPath, r))));
 
-fs.readdirSync(routesPath).map((r: string) => console.log(r));
 app.listen(PORT, () => {
     console.log(`Server is running on port localhost:${PORT}`);
 });

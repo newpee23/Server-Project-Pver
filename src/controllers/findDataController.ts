@@ -49,7 +49,7 @@ export const getQuestionnaireApi = async (
 
 export const findQuestionnaireData = async (f_id: string, member_id: number): Promise<QuestionnaireDataStatus[] | null> => {
   try {
-    const connection = await getDbConnection();
+    const connection = getDbConnection();
     const query = `SELECT master_complete.*
     , IFNULL((SELECT CONCAT(m_fname,' ',m_lname) FROM member WHERE master_complete.p0_user = member.m_id),null) AS p0_user_name 
     , IFNULL((SELECT CONCAT(m_fname,' ',m_lname) FROM member WHERE master_complete.p1_user = member.m_id),null) AS p1_user_name
@@ -72,6 +72,7 @@ export const findQuestionnaireData = async (f_id: string, member_id: number): Pr
 
     const [results] = await connection.query<QuestionnaireDataStatus[]>(query, [f_id, member_id]);
     // console.log(results);
+    
     return results;
   } catch (error: unknown) {
     console.error(error);
@@ -97,7 +98,7 @@ export const getBanApi = async (req: Request,res: Response): Promise<void> => {
 
 export const findBanData = async (): Promise<BanData[] | null> => {
   try {
-    const connection = await getDbConnection();
+    const connection = getDbConnection();
     const query = `SELECT ban.code AS id , ban.ban, ban.mo , ban.tambon_code , ban.ampher_code , ban.province_code
     ,(SELECT tambon.tambon FROM tambon WHERE ban.tambon_code = tambon.code) AS tombonName
     ,(SELECT ampher.ampher FROM ampher WHERE ban.ampher_code = ampher.code) AS ampherName
@@ -107,6 +108,7 @@ export const findBanData = async (): Promise<BanData[] | null> => {
     ORDER BY id ASC`;
 
     const [results] = await connection.query<BanData[]>(query);
+
     // console.log(results);
     return results;
   } catch (error: unknown) {

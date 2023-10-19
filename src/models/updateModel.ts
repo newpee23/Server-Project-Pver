@@ -39,9 +39,9 @@ export const updateMasterComplete = async (
   ];
 
   try {
-    const connection = await getDbConnection();
+    const connection = getDbConnection();
     await connection.query(sql, values);
-
+    
     return true;
   } catch (error: unknown) {
     console.log(error);
@@ -90,9 +90,9 @@ export const updatePage0 = async (
   ];
   
   try {
-    const connection = await getDbConnection();
+    const connection = getDbConnection();
     await connection.query(sql, values);
-
+    
     return true;
   } catch (error: unknown) {
     console.log(error);

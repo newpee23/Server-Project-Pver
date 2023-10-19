@@ -53,9 +53,9 @@ export const insertMasterComplete = async (member_id: number, fId: string, page:
     ];
 
     try {
-        const connection = await getDbConnection();
+        const connection = getDbConnection();
         await connection.query(sql, values);
-
+        
         return true;
     } catch (error: unknown) {
         console.log(error);
@@ -103,9 +103,9 @@ export const insertPage0 = async (data: FormDataP0, member_id: number, fId: stri
     ];
 
     try {
-        const connection = await getDbConnection();
+        const connection = getDbConnection();
         await connection.query(sql, values);
-
+        
         return true;
     } catch (error: unknown) {
         console.log(error);

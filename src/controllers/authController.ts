@@ -65,7 +65,7 @@ export const registerApi = async (
         try {
           // Encrypt Password
           const salt: string = await bcrypt.genSalt(10);
-          const connection = await getDbConnection();
+          const connection = getDbConnection();
           // สร้างคำสั่ง SQL สำหรับแทรกข้อมูลในตาราง member
           const insertQuery =
             "INSERT INTO member (m_username, m_password, m_fname, m_lname, m_idcard, m_email, m_phone, m_address, m_level) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -82,6 +82,8 @@ export const registerApi = async (
             m_address,
             m_level,
           ]);
+
+          
           res.status(201).json({ message: "User registered successfully" });
         } catch (error: unknown) {
           console.error(error);
@@ -121,7 +123,7 @@ export async function findUserByRegisters({
   m_email: string;
 }): Promise<userInsertRegister[]> {
   try {
-    const connection = await getDbConnection();
+    const connection = getDbConnection();
     const query =
       "SELECT * FROM member WHERE m_username = ? OR m_idcard = ? OR m_email = ? ORDER BY m_id ASC LIMIT 1";
     const [results] = await connection.query<userInsertRegister[]>(query, [
@@ -129,6 +131,8 @@ export async function findUserByRegisters({
       m_idcard,
       m_email,
     ]);
+
+    
     return results;
   } catch (error: unknown) {
     // การจัดการข้อผิดพลาดเมื่อเกิดข้อผิดพลาดในการดำเนินการ
@@ -140,7 +144,7 @@ export async function findUserByRegisters({
 export async function findUserByLogin({m_username, m_password}: dataLogin): Promise<userInsertRegister[]> {
  try {
   
-    const connection = await getDbConnection();
+    const connection = getDbConnection();
     const query = "SELECT * FROM member WHERE m_username = ? ORDER BY m_id ASC LIMIT 1";
 
     const [results] = await connection.query<userInsertRegister[]>(query, [
@@ -160,6 +164,7 @@ export async function findUserByLogin({m_username, m_password}: dataLogin): Prom
             return [];
         }
     }
+
     return results;
   } catch (error: unknown) {
     // การจัดการข้อผิดพลาดเมื่อเกิดข้อผิดพลาดในการดำเนินการ

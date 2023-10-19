@@ -8,7 +8,7 @@ export const getMemberApi = async (req: Request, res: Response): Promise<void> =
     const member_id: string = req.params.member_id;
 
     // Connect DB
-    const connection = await getDbConnection();
+    const connection = getDbConnection();
     if (!member_id) {
       //   member all
       const [rows] = await connection.query<userInsertRegister[]>(
@@ -24,7 +24,8 @@ export const getMemberApi = async (req: Request, res: Response): Promise<void> =
       member_id,
     ]);
 
-    // connection.end(); ยกเลิกการเชื่อมต่อ Database
+    
+    
     if (results.length === 0) {
       res.status(200).json({ message: "Member not found" });
       return;
@@ -42,12 +43,13 @@ export const findMemberById = async (id: number = 0): Promise<userInsertRegister
   try {
     const member_id: number = id;
     // Connect DB
-    const connection = await getDbConnection();
+    const connection = getDbConnection();
     if(member_id === 0){
        //   member all
        const [rows] = await connection.query<userInsertRegister[]>(
         "SELECT * FROM member"
       );
+      
 ;    return rows;
     }
     //  WHERE member_id 
@@ -55,6 +57,7 @@ export const findMemberById = async (id: number = 0): Promise<userInsertRegister
     const [results] = await connection.query<userInsertRegister[]>(query, [
       member_id,
     ]);
+    
     return results;
 
   } catch (error: unknown) {
