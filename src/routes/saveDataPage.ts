@@ -7,5 +7,5 @@ const router = express.Router(); //ใช้สร้างเส้นทาง
 router.post("/insert/savePage0", checkRequestToken ,page0Api);
 
 // http://localhost:5050/api/update/updatePage0
-router.put("/update/updatePage0" ,updatePage0Api);
+router.put("/update/updatePage0" , checkRequestToken ,updatePage0Api);
 export = router;

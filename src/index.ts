@@ -20,8 +20,8 @@ app.use(bodyParser.json({limit:'20mb'})); // จำกัดขนาดข้�
 app.use(cors()); //จัดการการดึง Api ไปใช้
 
 // ทดสอบ Connect DB
-const connection = getDbConnection();
-connection.end(); //ยกเลิกการเชื่อมต่อ Database
+// const connection = getDbConnection();
+// connection.end(); //ยกเลิกการเชื่อมต่อ Database
 
 // Route กำหนด path ของ routes อัตโนมัติ
 fs.readdirSync(routesPath).map((r: string) => app.use('/api', require(path.join(routesPath, r))));

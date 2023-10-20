@@ -1,5 +1,5 @@
 import { getDbConnection } from "../config/dbconnect";
-import { page0Query } from "../types/pageType";
+import { page0Query, page1F14Query } from "../types/pageType";
 
 export const queryPage0 = async (fId: string): Promise<page0Query[] | null> => {
     try {
@@ -20,4 +20,22 @@ export const queryPage0 = async (fId: string): Promise<page0Query[] | null> => {
       console.error(error);
       return null;
     }
-  };
+};
+
+export const queryPage1F1 = async (fId: string): Promise<page1F14Query[] | null> => {
+  try {
+    const connection = getDbConnection();
+    const query = `SELECT f14
+    FROM page0
+    WHERE f_id = ?
+    ORDER BY id ASC`;
+
+    const [results] = await connection.query<page1F14Query[]>(query,[fId]);
+    connection.end();
+    // console.log(results);
+    return results;
+  } catch (error: unknown) {
+    console.error(error);
+    return null;
+  }
+};

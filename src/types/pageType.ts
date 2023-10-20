@@ -116,3 +116,12 @@ export interface page0Query extends RowDataPacket {
   f22: string;
   f23: string;
 }
+
+export interface page1F14Query extends RowDataPacket {
+  f14: number;
+}
+
+export type Opprovince = {
+  value: number;
+  label: string;
+};

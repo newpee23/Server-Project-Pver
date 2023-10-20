@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import { BanData, QuestionnaireDataStatus } from "../types/findDataType";
 import { getDbConnection } from "../config/dbconnect";
+import { queryPage1F1 } from "../models/getModel";
+import { Opprovince } from "../types/pageType";
 
 
 export const getQuestionnaireApi = async (
@@ -116,3 +118,35 @@ export const findBanData = async (): Promise<BanData[] | null> => {
     return null;
   }
 };
+
+export const findPage1F1Api = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const f_id: string = req.params.f_id;
+    const queryF14Page1 = await queryPage1F1(f_id);
+
+    if (!queryF14Page1) {
+      res.status(200).json({ message: `พบข้อผิดพลาดการประมวลผลหน้า 1`, status: false });
+      return;
+    }
+
+    if (queryF14Page1.length !== 1) {
+      res.status(200).json({ message: `ไม่พบข้อมูลหน้าปกหรือข้อมูลหน้าปกมีข้อผิดพลาด`, status: false });
+      return;
+    }
+    // สร้างตัวเลือก F1 จาก F14 Page0
+    const loop: number = queryF14Page1[0].f14;
+    const responseData: Opprovince[] = [];
+
+    for (let value = 1; value <= loop; value++) {
+      responseData.push({ value, label: value.toString() });
+    }
+
+    res.status(200).json({ message: responseData, status: true });
+    return;
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'เกิดข้อผิดพลาดในระหว่างการประมวลผล', status: false });
+    return;
+  }
+};
+

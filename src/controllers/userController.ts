@@ -14,6 +14,7 @@ export const getMemberApi = async (req: Request, res: Response): Promise<void> =
       const [rows] = await connection.query<userInsertRegister[]>(
         "SELECT * FROM member"
       );
+      connection.end();
       res.json(rows);
       return;
     }
@@ -23,8 +24,7 @@ export const getMemberApi = async (req: Request, res: Response): Promise<void> =
     const [results] = await connection.query<userInsertRegister[]>(query, [
       member_id,
     ]);
-
-    
+    connection.end();
     
     if (results.length === 0) {
       res.status(200).json({ message: "Member not found" });
