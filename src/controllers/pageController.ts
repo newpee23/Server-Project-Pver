@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
-import { FormDataP0, FromP0Err, page0Query } from "../types/pageType";
+import { FormDataP0, FormDataP1Type, FromP0Err, page0Query } from "../types/pageType";
 import { validateDataForm0, validateValueFrom0 } from "../middleware/validateController";
 import { findQuestionnaireData } from "./findDataController";
 import { QuestionnaireDataStatus } from "../types/findDataType";
-import { insertMasterComplete, insertPage0 } from "../models/insertModel";
+import { insertMasterComplete, insertPage0, insertPage1 } from "../models/insertModel";
 import { queryPage0 } from "../models/getModel";
 import { responsePage0 } from "../middleware/initialDataFrom";
 import { updateMasterComplete, updatePage0 } from "../models/updateModel";
@@ -92,11 +92,11 @@ export const updatePage0Api = async (req: Request, res: Response): Promise<void>
         return;
       }
       // ตรวจค่าข้อมูลที่ต้องสอดคล้องกัน
-      // const newDataForm0: FromP0Err | boolean = validateValueFrom0(dataForm0);
-      // if(newDataForm0 !== true) {
-      //   res.status(200).json({ message: newDataForm0 , status: false});
-      //   return;
-      // }
+      const newDataForm0: FromP0Err | boolean = validateValueFrom0(dataForm0);
+      if(newDataForm0 !== true) {
+        res.status(200).json({ message: newDataForm0 , status: false});
+        return;
+      }
       // Update master_complete 
       const editMasterComplete: boolean = await updateMasterComplete(member_id, fId, 'page0');
       if(!editMasterComplete){
@@ -119,6 +119,44 @@ export const updatePage0Api = async (req: Request, res: Response): Promise<void>
     console.error(error);
     res.status(500).json({ message: error , status: false});
     return;
+  }
+};
+
+// Page 1 save
+export const page1Api = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const dataForm1: FormDataP1Type = req.body.data;
+    const member_id: number = req.body.member_id;
+    const fId: string = req.body.fId;
+
+    // ตรวจสอบว่ามีแบบฟร์อมใน master_complete หรือไม่
+    const masterComplete:QuestionnaireDataStatus[] | null = await findQuestionnaireData(fId, member_id);
+
+    if(masterComplete === null || masterComplete.length === 0){
+      res.status(200).json({ message: `หมายเลขแบบสอบถาม ${fId} ยังไม่ได้บันทึกหน้าปก` , status: false});
+      return;
+    }
+
+    // Update master_complete 
+    const editMasterComplete: boolean = await updateMasterComplete(member_id, fId, 'page1');
+    if(!editMasterComplete){
+       res.status(200).json({ message: "เกิดข้อผิดพลาดการแก้ไขหน้า 1" , status: false});
+      return;
+    }
+
+    // Insert Page1
+    const addPage1:boolean = await insertPage1(dataForm1,member_id, fId);
+    if(!addPage1){
+      res.status(200).json({ message: "เกิดข้อผิดพลาดการบันทึกหน้า 1" , status: false});
+      return;
+    }
+
+    res.status(200).json({ message: dataForm1 , status: true});
+    return;
+
+  } catch (error: unknown) {
+    console.error(error);
+    res.status(500).json({ message: error , status: false});
   }
 };
 

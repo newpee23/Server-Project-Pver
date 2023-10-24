@@ -1,5 +1,5 @@
 import { getDbConnection } from "../config/dbconnect";
-import { FormDataP0 } from "../types/pageType";
+import { FormDataP0, FormDataP1Type } from "../types/pageType";
 
 // insert master_complete
 export const insertMasterComplete = async (member_id: number, fId: string, page: string): Promise<boolean> => {
@@ -55,7 +55,7 @@ export const insertMasterComplete = async (member_id: number, fId: string, page:
     try {
         const connection = getDbConnection();
         await connection.query(sql, values);
-        
+        connection.end();
         return true;
     } catch (error: unknown) {
         console.log(error);
@@ -106,6 +106,57 @@ export const insertPage0 = async (data: FormDataP0, member_id: number, fId: stri
         const connection = getDbConnection();
         await connection.query(sql, values);
         
+        return true;
+    } catch (error: unknown) {
+        console.log(error);
+        return false;
+    }
+}
+
+// insert page0
+export const insertPage1 = async (data: FormDataP1Type, member_id: number, fId: string): Promise<boolean> => {
+   
+    const sql: string = `INSERT INTO page1 (id,f_id,f1,f2t,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12,f13,f14,f15,f16,f17,f18,f19,f20,f21,f22,f23,f24,f25,f26,f27,f28) 
+        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
+
+    const values: (string | number | null)[] = [
+        null, // id
+        fId, // f_id
+        data.p1F1, // f1
+        data.p1F2T, // f2t
+        data.p1F2, // f2
+        data.p1F3, // f3
+        data.p1F4, // f4
+        data.p1F5, // f5
+        data.p1F6, // f6
+        data.p1F7, // f7
+        data.p1F8, // f8
+        data.p1F9, // f9
+        data.p1F10, // f10
+        data.p1F11, // f11
+        data.p1F12, // f12
+        data.p1F13, // f13
+        data.p1F14, // f14
+        data.p1F15, // f15
+        data.p1F16, // f16
+        data.p1F17, // f17
+        data.p1F18, // f18
+        data.p1F19, // f19
+        data.p1F20, // f20
+        data.p1F21, // f21
+        data.p1F22, // f22
+        data.p1F23, // f23
+        data.p1F24, // f24
+        data.p1F25, // f25
+        data.p1F26, // f26
+        data.p1F27, // f27
+        data.p1F28, // f28
+    ];
+  
+    try {
+        const connection = getDbConnection();
+        await connection.query(sql, values);
+        connection.end();
         return true;
     } catch (error: unknown) {
         console.log(error);

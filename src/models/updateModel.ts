@@ -41,7 +41,7 @@ export const updateMasterComplete = async (
   try {
     const connection = getDbConnection();
     await connection.query(sql, values);
-    
+
     return true;
   } catch (error: unknown) {
     console.log(error);
@@ -88,11 +88,11 @@ export const updatePage0 = async (
     data.p0F22 + " " + data.p0F24 + ":00", //f23
     fId, //f_id
   ];
-  
+
   try {
     const connection = getDbConnection();
     await connection.query(sql, values);
-    
+
     return true;
   } catch (error: unknown) {
     console.log(error);
