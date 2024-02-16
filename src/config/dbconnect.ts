@@ -10,9 +10,9 @@ export const getDbConnection = (): mysql.Pool => {
 
   try {
     const connection = mysql.createPool({
-      host: "pver.cxworxybio16.ap-southeast-1.rds.amazonaws.com",
+      host: "localhost",
       user: "root",
-      password: "Nn!Peerapat",
+      password: "",
       database: "pver",
     });
     // console.log("Connected to MySQL database!");
